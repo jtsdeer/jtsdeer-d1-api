@@ -1,0 +1,16 @@
+{
+  "compatibility_date": "2025-10-08",
+  "main": "src/index.ts",
+  "name": "jtsdeer-d1-api",
+  "upload_source_maps": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_id": "e9d35db5-afee-4ed8-ad00-9c179021fef7",
+      "database_name": "jtsdeer-d1"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

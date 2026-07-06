@@ -22,6 +22,8 @@
   },
   "scripts": {
     "cf-typegen": "wrangler types",
+    "build": "tsc && wrangler deploy --dry-run",
+    "start": "npx wrangler dev",
     "check": "tsc && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "dev": "pnpm seedLocalD1 && wrangler dev",

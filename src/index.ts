@@ -21,6 +21,7 @@ export default {
         },
       });
     } catch (error) {
+      console.error(error); // Add console.error so logs show what went wrong
       return new Response("Internal Server Error", { status: 500 });
     }
   },

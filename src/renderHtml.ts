@@ -1,4 +1,9 @@
+// ⚡ Bolt: Fast-path for safe strings to avoid 5x replace calls
+const matchHtmlRegExp = /["'&<>]/;
+
 function escapeHtml(unsafe: string): string {
+  if (!matchHtmlRegExp.test(unsafe)) return unsafe;
+
   return unsafe
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

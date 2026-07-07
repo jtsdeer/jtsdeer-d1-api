@@ -1,3 +1,3 @@
-## 2024-12-27 - Fast HTML Escaping in Cloudflare Workers (V8)
-**Learning:** In Cloudflare Workers (V8), chained `.replace()` calls for HTML entity escaping are actually quite fast compared to custom replaceAll map logic or switch statements. However, the biggest performance win comes from avoiding the chained replacements entirely for strings that do not contain any HTML entities.
-**Action:** Use an early `RegExp.test()` for safe strings before falling back to chained `.replace()` calls for strings requiring escaping.
+## 2026-07-07 - Avoid Dead-Code Optimizations
+**Learning:** In contexts where strings are generated via `JSON.stringify`, they are guaranteed to contain quotes (`"`). Adding an early-return optimization like `!/["'&<>]/`.test(str)` becomes dead-code overhead. Furthermore, prioritizing front-end rendering performance (LCP/FCP) through resource hints (`<link rel="preload">` and `fetchpriority="high"`) can yield measurable, guaranteed benefits without runtime script overhead.
+**Action:** Verify if the "fast-path" condition is actually achievable for the expected inputs before implementing it. Use browser resource hints for critical assets instead of complex script optimizations when possible.

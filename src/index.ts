@@ -8,6 +8,10 @@ export default {
     return new Response(renderHtml(JSON.stringify(results, null, 2)), {
       headers: {
         "content-type": "text/html",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Content-Security-Policy": "default-src 'self'; img-src https://imagedelivery.net; style-src 'unsafe-inline' https://static.integrations.cloudflare.com",
       },
     });
   },

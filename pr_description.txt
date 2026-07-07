@@ -1,0 +1,21 @@
+🧪 Testy: Add HTTP method validation and error handling
+
+🐛 Issue
+- The main Worker endpoint lacked HTTP method validation, meaning it would attempt to process POST, PUT, DELETE, etc., as if they were GET requests. Additionally, the database query (`stmt.all()`) was not wrapped in a `try/catch` block, leaving the worker vulnerable to unhandled exceptions and silent crashes if the database connection failed or the query was invalid.
+
+## 🔍 Root Cause
+- Missing `request.method` check and missing `try/catch` block around the external D1 database call.
+
+## 🔧 Fix
+- Added an HTTP method check that returns `405 Method Not Allowed` with an `Allow: GET` header for non-GET requests.
+- Wrapped the database preparation and query execution in a `try/catch` block, returning a `500 Internal Server Error` if an exception occurs.
+- Recorded a learning in `.jules/testy.md`.
+
+## ✅ Validation
+- Ran the local development server using `npm run start`.
+- Verified `GET` requests return `200 OK` and correctly render the HTML.
+- Verified `POST` and `PUT` requests return `405 Method Not Allowed`.
+- Ran `npm run check` to verify TypeScript compilation and Wrangler deployment dry-run succeed without errors.
+
+## 🎯 Impact
+- Improved application stability and reliability by gracefully handling unsupported HTTP methods and preventing unhandled exceptions from external database queries.

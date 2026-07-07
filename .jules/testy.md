@@ -1,0 +1,3 @@
+## 2025-03-10 - Unhandled Exceptions and Missing HTTP Method Validation in Worker API
+**Learning:** Cloudflare Workers exposing API endpoints or web views without explicit HTTP method validation may process inappropriate request types (like POST or PUT when only GET is supported). Furthermore, failing to catch errors from database operations (like D1 `stmt.all()`) can lead to unhandled exceptions and silent crashes.
+**Action:** Always validate `request.method` and wrap external service calls (like D1 queries) in `try/catch` blocks, returning appropriate HTTP error codes (`405 Method Not Allowed`, `500 Internal Server Error`).

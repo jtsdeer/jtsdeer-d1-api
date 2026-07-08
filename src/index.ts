@@ -15,8 +15,11 @@ export default {
           "content-type": "text/html",
         },
       });
-    } catch (e: any) {
-      return new Response(`Error: ${e.message}`, { status: 500 });
+    } catch (e: unknown) {
+      return new Response(
+        `Error: ${e instanceof Error ? e.message : String(e)}`,
+        { status: 500 },
+      );
     }
   },
 } satisfies ExportedHandler<Env>;

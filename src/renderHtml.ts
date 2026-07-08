@@ -17,13 +17,18 @@ export function renderHtml(content: string) {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>D1</title>
+        <!-- ⚡ Bolt: Preload critical assets to improve LCP and FCP -->
+        <link rel="preload" href="https://static.integrations.cloudflare.com/styles.css" as="style">
+        <link rel="preload" href="https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/30e0d3f6-6076-40f8-7abb-8a7676f83c00/public" as="image">
         <link rel="stylesheet" type="text/css" href="https://static.integrations.cloudflare.com/styles.css">
       </head>
     
       <body>
         <header>
+          <!-- ⚡ Bolt: fetchpriority="high" tells the browser to prioritize this LCP image -->
           <img
             src="https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/30e0d3f6-6076-40f8-7abb-8a7676f83c00/public"
+            fetchpriority="high"
           />
           <h1>🎉 Successfully connected d1-template to D1</h1>
         </header>

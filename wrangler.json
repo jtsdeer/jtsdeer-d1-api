@@ -1,16 +1,24 @@
 {
   "compatibility_date": "2025-10-08",
   "main": "src/index.ts",
-  "name": "jtsdeer-d1-api-test",
+  "name": "jtsdeer-d1-api",
   "upload_source_maps": true,
   "d1_databases": [
     {
       "binding": "DB",
-      "database_id": "bce2f351-4a4f-48d8-9663-ab423907138a",
-      "database_name": "jtsdeer-d1-test"
+      "database_id": "241db32e-399d-41ff-9be2-4da9c9a6f25e",
+      "database_name": "jtsdeer-d1"
     }
   ],
   "observability": {
     "enabled": true
-  }
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "deleted_classes": [
+        "WebSocketManager"
+      ]
+    }
+  ]
 }

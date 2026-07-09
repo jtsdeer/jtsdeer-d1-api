@@ -2,6 +2,11 @@ import { renderHtml } from "./renderHtml";
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === "/favicon.ico") {
+      return new Response(null, { status: 404 });
+    }
+
     try {
       if (!env.DB) {
         throw new Error("Database binding 'DB' is not configured.");
@@ -16,10 +21,8 @@ export default {
         },
       });
     } catch (e: unknown) {
-      return new Response(
-        `Error: ${e instanceof Error ? e.message : String(e)}`,
-        { status: 500 },
-      );
+      console.error("Operation failed", e);
+      return new Response("Internal Server Error", { status: 500 });
     }
   },
 } satisfies ExportedHandler<Env>;

@@ -3,6 +3,11 @@ import { renderHtml } from "./renderHtml";
 export default {
   async fetch(request, env) {
     try {
+      const url = new URL(request.url);
+      if (url.pathname === "/favicon.ico") {
+        return new Response(null, { status: 404 });
+      }
+
       if (!env.DB) {
         throw new Error("Database binding 'DB' is not configured.");
       }

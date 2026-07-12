@@ -19,3 +19,7 @@
 **Vulnerability:** The application was catching exceptions (including potential database connection or query errors) and returning the raw error message directly in the HTTP 500 response (`e.message`).
 **Learning:** This can inadvertently expose internal architecture details, database schema information, or Cloudflare specific environment configurations to end users or attackers.
 **Prevention:** Always log the full error details securely on the server-side using `console.error` and return a generic, safe error message (e.g., "An internal server error occurred.") to the client.
+## 2025-03-08 - Enforce strict routing and methods
+**Vulnerability:** The main Cloudflare Worker fetch handler accepted any HTTP method and executed database queries for any route, opening up a potential vector for DoS (resource exhaustion) and unexpected behavior.
+**Learning:** In a single-purpose or specific-route Worker, failure to check the request URL and Method up front means all requests proceed to the business logic/database phase, unnecessarily consuming resources.
+**Prevention:** Always restrict allowed methods (e.g. GET only) and validate the route (`url.pathname === "/"`) early in the `fetch` handler, returning 405 Method Not Allowed or 404 Not Found before doing any expensive work.

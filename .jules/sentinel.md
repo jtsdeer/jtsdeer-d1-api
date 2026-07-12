@@ -1,3 +1,7 @@
+## 2025-03-08 - Add security headers to HTML response
+**Vulnerability:** Missing security headers on the main HTML response.
+**Learning:** Cloudflare Workers returning raw HTML responses using `new Response(...)` must manually include standard security headers (CSP, X-Frame-Options, etc.).
+**Prevention:** Ensure that any endpoint rendering HTML includes defense-in-depth headers by default.
 ## 2024-07-06 - Unsanitized Output in HTML Template rendering
 **Vulnerability:** XSS vulnerability found in `src/renderHtml.ts`. The HTML template directly interpolates stringified JSON data (`${content}`) into a `<pre><code>` block without HTML entity escaping. An attacker could potentially store a malicious comment containing XSS payloads, which would then be executed when this HTML page is rendered.
 **Learning:** Even when outputting data inside `<code>` blocks, it's essential to sanitize or escape it, as `<code>` blocks don't prevent HTML parsing, and if not escaped, the browser will interpret `<script>` tags and other HTML inside it.

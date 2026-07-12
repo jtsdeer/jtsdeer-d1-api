@@ -1,5 +1,5 @@
 {
-  "name": "jtsdeer-d1-api-test",
+  "name": "jtsdeer-d1-api",
   "description": "Cloudflare's native serverless SQL database.",
   "private": true,
   "cloudflare": {

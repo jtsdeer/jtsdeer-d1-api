@@ -7,6 +7,10 @@
 **Learning:** Even when outputting data inside `<code>` blocks, it's essential to sanitize or escape it, as `<code>` blocks don't prevent HTML parsing, and if not escaped, the browser will interpret `<script>` tags and other HTML inside it.
 **Prevention:** Always escape HTML entities (`<`, `>`, `&`, `"`, `'`) for any untrusted data or dynamically generated content before interpolating it into raw HTML strings.
 
+## 2026-07-12 - Error Information Leakage
+**Vulnerability:** The error handler in `src/index.ts` returned raw stack traces / error messages directly to the client on 500 responses. This exposes internal database or application implementation details.
+**Learning:** Error details must be logged on the server and safely obscured from the client to prevent reconnaissance by attackers.
+**Prevention:** Fail securely by using generic user-friendly messages for client responses (e.g. "Internal Server Error") and using `console.error` for internal debugging details.
 ## 2026-07-11 - Error Detail Leakage in Cloudflare Worker
 **Vulnerability:** Information Disclosure vulnerability found in `src/index.ts`. The generic error handler in the `fetch` block was passing `e.message` or `String(e)` directly back in a 500 response.
 **Learning:** In serverless environments like Cloudflare Workers interacting with databases (like D1), throwing detailed errors out to the client can inadvertently expose schema details, missing binding names, or infrastructure information to potential attackers.

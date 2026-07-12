@@ -29,6 +29,7 @@ export function renderHtml(content: string) {
         <header>
           <img
             src="https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/30e0d3f6-6076-40f8-7abb-8a7676f83c00/public"
+            alt="Cloudflare D1 Logo"
           />
           <h1>🎉 Successfully connected d1-template to D1</h1>
         </header>
@@ -36,7 +37,7 @@ export function renderHtml(content: string) {
           <p>Your D1 Database contains the following data:</p>
           <pre><code><span style="color: #0E838F">&gt; </span>SELECT * FROM comments LIMIT 3;<br>${safeContent}</code></pre>
           <small class="blue">
-            <a target="_blank" href="https://developers.cloudflare.com/d1/tutorials/build-a-comments-api/">Build a comments API with Workers and D1</a>
+            <a target="_blank" rel="noopener noreferrer" aria-label="Build a comments API with Workers and D1 (opens in a new tab)" href="https://developers.cloudflare.com/d1/tutorials/build-a-comments-api/">Build a comments API with Workers and D1</a>
           </small>
         </main>
       </body>

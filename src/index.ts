@@ -2,8 +2,9 @@ import { renderHtml } from "./renderHtml";
 
 export default {
   async fetch(request, env) {
+    // 🛡️ Sentinel: Early return for implicit browser requests to prevent DB exhaustion
     const url = new URL(request.url);
-    if (url.pathname === "/favicon.ico") {
+    if (url.pathname === "/favicon.ico" || url.pathname === "/robots.txt") {
       return new Response(null, { status: 404 });
     }
 

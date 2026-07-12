@@ -1,0 +1,3 @@
+## 2024-05-24 - [Avoid implicit browser requests triggering expensive D1 queries]
+**Learning:** Cloudflare Workers connected to D1 will execute the full `fetch` handler for implicit browser requests like `/favicon.ico` if not explicitly caught. This results in unnecessary, expensive database queries running for unneeded static asset requests.
+**Action:** Implement early returns checking `url.pathname` for unmatched routes (e.g., `/favicon.ico`) at the beginning of the `fetch` handler to skip database and rendering logic.

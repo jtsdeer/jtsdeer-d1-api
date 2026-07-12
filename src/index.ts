@@ -2,7 +2,18 @@ import { renderHtml } from "./renderHtml";
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === "/favicon.ico") {
+      return new Response(null, { status: 404 });
+    }
+
     try {
+      // ⚡ Bolt: Early return for implicit browser requests to prevent expensive D1 queries
+      const url = new URL(request.url);
+      if (url.pathname === "/favicon.ico") {
+        return new Response(null, { status: 404 });
+      }
+
       if (!env.DB) {
         throw new Error("Database binding 'DB' is not configured.");
       }

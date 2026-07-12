@@ -2,10 +2,9 @@ import { renderHtml } from "./renderHtml";
 
 export default {
   async fetch(request, env) {
-    // ⚡ Bolt: Early return for implicit browser requests like /favicon.ico
-    // Prevents executing the entire fetch handler and redundant D1 queries
+    // 🛡️ Sentinel: Early return for implicit browser requests to prevent DB exhaustion
     const url = new URL(request.url);
-    if (url.pathname === "/favicon.ico") {
+    if (url.pathname === "/favicon.ico" || url.pathname === "/robots.txt") {
       return new Response(null, { status: 404 });
     }
 
@@ -20,13 +19,24 @@ export default {
       return new Response(renderHtml(JSON.stringify(results, null, 2)), {
         headers: {
           "content-type": "text/html",
+          // Security headers
+          "Content-Security-Policy":
+            "default-src 'self'; img-src 'self' https://imagedelivery.net; style-src 'self' https://static.integrations.cloudflare.com 'unsafe-inline'; frame-ancestors 'none';",
+          "X-Content-Type-Options": "nosniff",
+          "X-Frame-Options": "DENY",
+          "Referrer-Policy": "strict-origin-when-cross-origin",
         },
       });
     } catch (e: unknown) {
-      return new Response(
-        `Error: ${e instanceof Error ? e.message : String(e)}`,
-        { status: 500 },
-      );
+      // 🛡️ Sentinel: Log the actual error internally to avoid leaking sensitive information
+      console.error("Internal Server Error:", e);
+      return new Response("An internal server error occurred.", {
+        status: 500,
+        headers: {
+          "content-type": "text/plain",
+          "X-Content-Type-Options": "nosniff",
+        },
+      });
     }
   },
 } satisfies ExportedHandler<Env>;

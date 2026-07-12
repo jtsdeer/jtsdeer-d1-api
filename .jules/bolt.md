@@ -1,3 +1,6 @@
-## 2024-10-24 - Early Returns for Implicit Browser Requests
-**Learning:** Implicit browser requests like `/favicon.ico` trigger the full route execution and redundant database queries in Cloudflare Workers if an early return is not implemented.
-**Action:** Implement early returns for unmatched routes (like `/favicon.ico`) in Cloudflare Workers to prevent the entire `fetch` handler from executing and triggering expensive, redundant D1 database queries.
+## 2026-07-09 - Missing Routing Causes Redundant Database Queries
+**Learning:** Cloudflare Workers that lack basic routing will execute the entire `fetch` handler for implicit browser requests like `/favicon.ico` or `/robots.txt`. In a worker connected to D1, this leads to expensive and unnecessary database queries on every page load.
+**Action:** Always implement an early return for unmatched paths (or specifically ignore common asset paths) before executing expensive operations like D1 queries.
+## 2024-05-24 - [Avoid implicit browser requests triggering expensive D1 queries]
+**Learning:** Cloudflare Workers connected to D1 will execute the full `fetch` handler for implicit browser requests like `/favicon.ico` if not explicitly caught. This results in unnecessary, expensive database queries running for unneeded static asset requests.
+**Action:** Implement early returns checking `url.pathname` for unmatched routes (e.g., `/favicon.ico`) at the beginning of the `fetch` handler to skip database and rendering logic.

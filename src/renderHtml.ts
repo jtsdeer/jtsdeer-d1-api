@@ -29,7 +29,7 @@ export function renderHtml(content: string) {
         <header>
           <img
             src="https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/30e0d3f6-6076-40f8-7abb-8a7676f83c00/public"
-            alt="Cloudflare D1 Logo"
+            alt="Cloudflare D1 Database logo"
           />
           <h1>🎉 Successfully connected d1-template to D1</h1>
         </header>

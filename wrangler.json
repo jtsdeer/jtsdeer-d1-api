@@ -12,13 +12,5 @@
   ],
   "observability": {
     "enabled": true
-  },
-  "migrations": [
-    {
-      "tag": "v1",
-      "deleted_classes": [
-        "WebSocketManager"
-      ]
-    }
-  ]
+  }
 }

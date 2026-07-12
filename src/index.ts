@@ -9,6 +9,11 @@ export default {
     }
 
     try {
+      const url = new URL(request.url);
+      if (url.pathname === "/favicon.ico") {
+        return new Response(null, { status: 404 });
+      }
+
       if (!env.DB) {
         throw new Error("Database binding 'DB' is not configured.");
       }
@@ -19,16 +24,26 @@ export default {
       return new Response(renderHtml(JSON.stringify(results, null, 2)), {
         headers: {
           "content-type": "text/html",
-          // 🛡️ Sentinel: Add fundamental security headers
+          // Security headers
+          "Content-Security-Policy": "default-src 'self'; img-src 'self' https://imagedelivery.net; style-src 'self' https://static.integrations.cloudflare.com 'unsafe-inline'; frame-ancestors 'none';",
           "X-Content-Type-Options": "nosniff",
           "X-Frame-Options": "DENY",
           "Referrer-Policy": "strict-origin-when-cross-origin",
         },
       });
     } catch (e: unknown) {
-      // 🛡️ Sentinel: Log actual error internally, but do not leak details to the client
-      console.error("Operation failed", e);
-      return new Response("Internal Server Error", { status: 500 });
+      // 🛡️ Sentinel: Log the actual error internally to avoid leaking sensitive information
+      console.error("Internal Server Error:", e);
+      return new Response(
+        "An internal server error occurred.",
+        {
+          status: 500,
+          headers: {
+             "content-type": "text/plain",
+             "X-Content-Type-Options": "nosniff"
+          }
+        },
+      );
     }
   },
 } satisfies ExportedHandler<Env>;

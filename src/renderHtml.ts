@@ -21,7 +21,7 @@ export function renderHtml(content: string) {
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>D1</title>
+        <title>D1 Database - Connection Success</title>
         <link rel="stylesheet" type="text/css" href="https://static.integrations.cloudflare.com/styles.css">
       </head>
     
@@ -35,7 +35,7 @@ export function renderHtml(content: string) {
         </header>
         <main>
           <p>Your D1 Database contains the following data:</p>
-          <pre><code><span style="color: #0E838F">&gt; </span>SELECT * FROM comments LIMIT 3;<br>${safeContent}</code></pre>
+          <pre tabindex="0" role="region" aria-label="Database query results"><code><span style="color: #0E838F">&gt; </span>SELECT * FROM comments LIMIT 3;<br>${safeContent}</code></pre>
           <small class="blue">
             <a target="_blank" rel="noopener noreferrer" aria-label="Build a comments API with Workers and D1 (opens in a new tab)" href="https://developers.cloudflare.com/d1/tutorials/build-a-comments-api/">Build a comments API with Workers and D1</a>
           </small>

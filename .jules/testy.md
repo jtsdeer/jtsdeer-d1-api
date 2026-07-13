@@ -1,39 +1,25 @@
 ## 2024-07-08 - Missing Database Connection and Query Error Handling
-
 **Learning:** In serverless architectures like Cloudflare Workers, external bindings like D1 databases (`env.DB`) might fail to initialize properly or encounter query failures (e.g. un-applied migrations). If not checked and handled with `try-catch`, this leads to generic internal errors instead of graceful fallbacks.
 **Action:** Always verify that environment bindings exist before using them and wrap database queries in a `try-catch` block to handle query failures, returning appropriate HTTP status codes like 500.
 
 ## 2025-02-28 - Invalid Durable Object migrations cause fatal crashes
-
 **Learning:** In Cloudflare Workers configuration (`wrangler.json`), if the `migrations` block references non-existent Durable Object classes (e.g. `deleted_classes` referencing `WebSocketManager` which does not exist), it will cause fatal crashes during local development (`wrangler dev`) and likely deployment.
 **Action:** Validate that `migrations` configurations exactly match existing Durable Objects and verify local development environment starts successfully with `wrangler dev` when altering `wrangler.json`.
-
 ## 2023-10-27 - Unmatched Implicit Routes Cause Redundant DB Executions
-
 **Learning:** In Cloudflare Workers connected to D1 (or other databases), failing to implement early returns for unmatched routes like `/favicon.ico` allows the entire `fetch` handler to execute, triggering expensive, redundant database queries.
 **Action:** Always parse the request URL and return early for known implicit browser requests or unrelated paths to prevent wasted DB executions and compute overhead.
-
 ## 2024-07-12 - CI failures due to name mismatch and invalid migrations
-
 **Issue:** GitHub Actions CI checks failed with opaque errors (no annotations or job logs).
 **Root Cause:**
-
 1. The `name` field in `package.json` (`jtsdeer-d1-api-test`) did not match the `name` field in `wrangler.json` (`jtsdeer-d1-api`), causing CI mismatch errors.
 2. The `wrangler.json` file contained an invalid `migrations` block referencing a non-existent Durable Object `WebSocketManager`.
 3. The `dev` script in `package.json` used `pnpm` while the project uses `npm`, causing package manager mixing issues.
-   **Fix:** Updated `package.json` and `package-lock.json` names to `jtsdeer-d1-api`, replaced `pnpm` with `npm run` in the `dev` script, and removed the invalid `migrations` block from `wrangler.json`.
-   **Validation:** Ran `npm install` and `npm run build` which succeeded successfully.
-   **Impact:** Unblocks CI checks and allows for successful deployments.
-
+**Fix:** Updated `package.json` and `package-lock.json` names to `jtsdeer-d1-api`, replaced `pnpm` with `npm run` in the `dev` script, and removed the invalid `migrations` block from `wrangler.json`.
+**Validation:** Ran `npm install` and `npm run build` which succeeded successfully.
+**Impact:** Unblocks CI checks and allows for successful deployments.
 ## 2024-07-09 - Invalid Durable Object Migrations Break Dev Server
-
 **Learning:** If `wrangler.json` contains a Durable Objects `migrations` array specifying deleted or renamed classes (like `deleted_classes: ["WebSocketManager"]`) but the actual class or durable object binding does not exist, `wrangler dev` will fatally crash with: `Cannot apply deleted_classes migration to non-existent class`.
 **Action:** When working with Cloudflare Workers configurations, periodically review the `migrations` block in `wrangler.json` and ensure any referenced classes or changes strictly align with the existing codebase and bindings to avoid breaking local development and deployments.
-
 ## 2024-07-09 - Early Return for Implicit Browser Requests
-
 **Learning:** Implicit browser requests, like `/favicon.ico`, will trigger the entire `fetch` handler if not explicitly handled. In Cloudflare Workers connected to a D1 database, this can result in executing redundant and expensive database queries for requests that don't need them.
 **Action:** Implement early returns for unmatched or implicit routes (e.g., `/favicon.ico`) to prevent unnecessary database operations.
-## 2025-02-28 - Uncaught exceptions during initialization or URL parsing
-**Learning:** Initializing objects like `new URL()` can throw unexpected errors, such as when processing malformed requests. If these happen outside of a designated `try...catch` block, they bypass application-level error handlers, resulting in unhandled promise rejections or raw stack traces leaking to the client. Additionally, checking `e instanceof Error` in TypeScript catch blocks is required for safe logging to avoid CI build failures.
-**Action:** Expand `try...catch` block coverage to include all initialization and route parsing logic, ensuring all possible exceptions are caught and passed to uniform error handlers. Always use type verification `e instanceof Error` when extracting `message` or `stack` from caught errors.

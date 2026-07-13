@@ -2,17 +2,17 @@ import { renderHtml } from "./renderHtml";
 
 export default {
   async fetch(request, env) {
+    // 🛡️ Sentinel: Enforce allowed methods and routes to prevent DB exhaustion and unauthorized access
+    if (request.method !== "GET") {
+      return new Response("Method Not Allowed", { status: 405 });
+    }
+
+    const url = new URL(request.url);
+    if (url.pathname !== "/") {
+      return new Response(null, { status: 404 });
+    }
+
     try {
-      // 🛡️ Sentinel: Enforce allowed methods and routes to prevent DB exhaustion and unauthorized access
-      if (request.method !== "GET") {
-        return new Response("Method Not Allowed", { status: 405 });
-      }
-
-      const url = new URL(request.url);
-      if (url.pathname !== "/") {
-        return new Response(null, { status: 404 });
-      }
-
       if (!env.DB) {
         throw new Error("Database binding 'DB' is not configured.");
       }
@@ -35,11 +35,7 @@ export default {
       });
     } catch (e: unknown) {
       // 🛡️ Sentinel: Log the actual error internally to avoid leaking sensitive information
-      if (e instanceof Error) {
-        console.error("Internal Server Error:", e.message, e.stack);
-      } else {
-        console.error("Internal Server Error:", String(e));
-      }
+      console.error("Internal Server Error:", e);
       return new Response("An internal server error occurred.", {
         status: 500,
         headers: {

@@ -42,7 +42,11 @@ export default {
       });
     } catch (e: unknown) {
       // 🛡️ Sentinel: Log the actual error internally to avoid leaking sensitive information
-      console.error("Internal Server Error:", e);
+      if (e instanceof Error) {
+        console.error("Internal Server Error:", e.message, e.stack);
+      } else {
+        console.error("Internal Server Error:", e);
+      }
       return new Response("An internal server error occurred.", {
         status: 500,
         headers: ERROR_HEADERS,

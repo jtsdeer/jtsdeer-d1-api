@@ -26,3 +26,7 @@
 ## 2024-05-24 - [Remove accidental package-lock.json to fix CI build caching]
 **Learning:** In projects managed by `pnpm`, an accidental `package-lock.json` committed to the repository can cause CI runner caching conflicts and build failures because tools may prioritize npm's lockfile over pnpm's lockfile.
 **Action:** When working on CI pipeline fixes, always check for the presence of multiple lockfiles (e.g., `package-lock.json` and `pnpm-lock.yaml`) and remove the incorrect one.
+
+## 2025-10-09 - Strict TypeScript Error Type Verification
+**Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
+**Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.

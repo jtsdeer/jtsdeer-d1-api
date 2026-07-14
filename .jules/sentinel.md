@@ -23,3 +23,7 @@
 **Vulnerability:** The main Cloudflare Worker fetch handler accepted any HTTP method and executed database queries for any route, opening up a potential vector for DoS (resource exhaustion) and unexpected behavior.
 **Learning:** In a single-purpose or specific-route Worker, failure to check the request URL and Method up front means all requests proceed to the business logic/database phase, unnecessarily consuming resources.
 **Prevention:** Always restrict allowed methods (e.g. GET only) and validate the route (`url.pathname === "/"`) early in the `fetch` handler, returning 405 Method Not Allowed or 404 Not Found before doing any expensive work.
+## 2026-07-13 - Prevent Caching of Database Results
+**Vulnerability:** HTTP responses containing database queries and error messages were missing explicit Cache-Control headers, allowing browsers or intermediate CDNs to cache potentially sensitive data.
+**Learning:** Cloudflare Workers or CDNs cache responses based on various factors. Database results or internal application errors should explicitly opt-out of caching to prevent information disclosure via shared or local caches.
+**Prevention:** Always add `Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate` to API, HTML, or error responses that expose database contents or internal state.

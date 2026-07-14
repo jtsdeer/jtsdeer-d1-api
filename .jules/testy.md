@@ -23,3 +23,7 @@
 ## 2024-07-09 - Early Return for Implicit Browser Requests
 **Learning:** Implicit browser requests, like `/favicon.ico`, will trigger the entire `fetch` handler if not explicitly handled. In Cloudflare Workers connected to a D1 database, this can result in executing redundant and expensive database queries for requests that don't need them.
 **Action:** Implement early returns for unmatched or implicit routes (e.g., `/favicon.ico`) to prevent unnecessary database operations.
+
+## 2025-10-09 - Strict TypeScript Error Type Verification
+**Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
+**Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.

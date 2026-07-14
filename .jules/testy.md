@@ -23,3 +23,6 @@
 ## 2024-07-09 - Early Return for Implicit Browser Requests
 **Learning:** Implicit browser requests, like `/favicon.ico`, will trigger the entire `fetch` handler if not explicitly handled. In Cloudflare Workers connected to a D1 database, this can result in executing redundant and expensive database queries for requests that don't need them.
 **Action:** Implement early returns for unmatched or implicit routes (e.g., `/favicon.ico`) to prevent unnecessary database operations.
+## 2024-05-24 - [Remove accidental package-lock.json to fix CI build caching]
+**Learning:** In projects managed by `pnpm`, an accidental `package-lock.json` committed to the repository can cause CI runner caching conflicts and build failures because tools may prioritize npm's lockfile over pnpm's lockfile.
+**Action:** When working on CI pipeline fixes, always check for the presence of multiple lockfiles (e.g., `package-lock.json` and `pnpm-lock.yaml`) and remove the incorrect one.

@@ -25,15 +25,8 @@ export default {
         return new Response("Method Not Allowed", { status: 405 });
       }
 
-      // ⚡ Bolt: Fast path matching via string operations is ~10x faster than allocating a URL object
-      const pathStart = request.url.indexOf("/", request.url.indexOf("//") + 2);
-      let isRoot = true;
-      if (pathStart !== -1) {
-        const nextChar = request.url.charAt(pathStart + 1);
-        isRoot = nextChar === "" || nextChar === "?";
-      }
-
-      if (!isRoot) {
+      const url = new URL(request.url);
+      if (url.pathname !== "/") {
         return new Response(null, { status: 404 });
       }
 

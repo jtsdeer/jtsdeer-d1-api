@@ -7,6 +7,3 @@
 ## 2024-07-13 - [Extract Static Headers to Module Scope in Cloudflare Workers]
 **Learning:** Extracting static object literals like HTTP headers outside the main `fetch` handler to the module scope prevents unnecessary memory reallocation on every request, reducing garbage collection overhead and slightly improving throughput in the V8 runtime.
 **Action:** Always extract static response structures, such as configurations or headers, to the module scope in Cloudflare Workers applications.
-## 2024-05-24 - [Avoid URL object allocation on hot path for route matching]
-**Learning:** In Cloudflare Workers (V8 runtime), constructing a full `URL` object (e.g., `new URL(request.url)`) is surprisingly computationally expensive compared to simple string matching because it involves full parsing and object allocation.
-**Action:** When performing simple routing or path checking (like verifying if a request is to the root `/`), use string methods like `indexOf` and substring checking directly on `request.url` to bypass URL object instantiation. This can yield a significant (~10x) speedup on that specific check.

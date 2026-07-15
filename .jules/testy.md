@@ -30,6 +30,3 @@
 ## 2025-10-09 - Strict TypeScript Error Type Verification
 **Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
 **Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.
-## 2024-07-15 - Prevent Accidental Caching of Database Outputs and Errors
-**Learning:** Cloudflare Workers can accidentally cache responses containing sensitive database outputs or internal error details if cache headers are not explicitly set. This can lead to stale data being served or sensitive information being leaked to unauthorized users.
-**Action:** Always include `Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate` in HTTP response headers, especially for successful database queries and error responses, to prevent caching.

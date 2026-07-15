@@ -10,13 +10,11 @@ const SUCCESS_HEADERS = {
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
 };
 
 const ERROR_HEADERS = {
   "content-type": "text/plain",
   "X-Content-Type-Options": "nosniff",
-  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
 };
 
 export default {

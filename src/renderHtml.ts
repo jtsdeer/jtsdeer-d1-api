@@ -12,10 +12,10 @@ function escapeHtml(unsafe: string): string {
   return unsafe.replace(/[&<>"']/g, (match) => HTML_ENTITIES[match]);
 }
 
-// ⚡ Bolt: Extracting large static HTML strings to module-level constants
-// and using string concatenation avoids template literal evaluation overhead
-// and reduces intermediate string allocations in the V8 engine, improving throughput by ~15-20%.
-const HTML_PREFIX = `
+export function renderHtml(content: string) {
+  const safeContent = escapeHtml(content);
+
+  return `
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -35,9 +35,7 @@ const HTML_PREFIX = `
         </header>
         <main>
           <p>Your D1 Database contains the following data:</p>
-          <pre><code><span style="color: #0E838F">&gt; </span>SELECT * FROM comments LIMIT 3;<br>`;
-
-const HTML_SUFFIX = `</code></pre>
+          <pre><code><span style="color: #0E838F">&gt; </span>SELECT * FROM comments LIMIT 3;<br>${safeContent}</code></pre>
           <small class="blue">
             <a target="_blank" rel="noopener noreferrer" aria-label="Build a comments API with Workers and D1 (opens in a new tab)" href="https://developers.cloudflare.com/d1/tutorials/build-a-comments-api/">Build a comments API with Workers and D1</a>
           </small>
@@ -45,7 +43,4 @@ const HTML_SUFFIX = `</code></pre>
       </body>
     </html>
 `;
-
-export function renderHtml(content: string) {
-  return HTML_PREFIX + escapeHtml(content) + HTML_SUFFIX;
 }

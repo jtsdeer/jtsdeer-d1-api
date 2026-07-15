@@ -10,6 +10,3 @@
 ## 2024-05-24 - [Avoid URL object allocation on hot path for route matching]
 **Learning:** In Cloudflare Workers (V8 runtime), constructing a full `URL` object (e.g., `new URL(request.url)`) is surprisingly computationally expensive compared to simple string matching because it involves full parsing and object allocation.
 **Action:** When performing simple routing or path checking (like verifying if a request is to the root `/`), use string methods like `indexOf` and substring checking directly on `request.url` to bypass URL object instantiation. This can yield a significant (~10x) speedup on that specific check.
-## 2026-07-15 - [Use String Concatenation over Template Literals for Large Static HTML]
-**Learning:** Constructing HTML outputs using a single large template literal with interpolated variables can cause performance overhead on the hot path in V8 due to intermediate string generation and string template evaluation.
-**Action:** Extract large static portions of the text/HTML into module-level string constants and use standard string concatenation (`+`) with the dynamically escaped parts. This avoids evaluating the template literal structure and creates fewer intermediate string allocations, improving throughput.

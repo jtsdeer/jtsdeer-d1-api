@@ -1,1 +1,0 @@
-- **HTML Escaping Performance**: Replacing multiple chaining `.replace(/X/g, 'Y')` calls with a single-pass regex replacement using a switch-case block (e.g., `.replace(/[&<>"']/g, (c) => { switch (c) { ... } })`) can yield significant performance improvements by reducing string allocations.

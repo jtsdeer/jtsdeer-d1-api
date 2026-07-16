@@ -1,22 +1,10 @@
-// Optimized HTML escaping: ~46% faster (1918ms vs 4556ms on 100k iterations)
-// Uses a single-pass regex replacement to minimize string allocations.
 function escapeHtml(unsafe: string): string {
-  return unsafe.replace(/[&<>"']/g, (c) => {
-    switch (c) {
-      case "&":
-        return "&amp;";
-      case "<":
-        return "&lt;";
-      case ">":
-        return "&gt;";
-      case '"':
-        return "&quot;";
-      case "'":
-        return "&#039;";
-      default:
-        return c;
-    }
-  });
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 export function renderHtml(content: string) {

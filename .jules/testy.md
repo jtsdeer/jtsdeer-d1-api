@@ -30,3 +30,7 @@
 ## 2025-10-09 - Strict TypeScript Error Type Verification
 **Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
 **Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.
+
+## 2025-10-09 - CI mismatch error fixes should be isolated
+**Learning:** If an explicit instruction to fix a CI failure occurs while operating under a specific persona, the CI fix (e.g. updating the deployment target `name` in `wrangler.json`) must be isolated on its own branch so that it is properly reviewed, and not bundled with unrelated feature logic in a single PR. Combining them is treated as an unauthorized architectural change and will fail review.
+**Action:** When identifying CI-related configuration problems (like target name mismatches) that need fixing, strictly separate those fixes onto a dedicated branch (like `testy-ci-fix`) rather than grouping them with functional/UI fixes in the same branch.

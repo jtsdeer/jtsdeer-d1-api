@@ -30,6 +30,6 @@
 ## 2025-10-09 - Strict TypeScript Error Type Verification
 **Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
 **Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.
-## 2024-05-24 - [Cloudflare Workers CI Naming Expectations]
-**Learning:** CI pipelines for Cloudflare Workers often expect the `name` field in `wrangler.json` to exactly match the deployment target they are verifying (e.g., `jtsdeer-d1-api`). A mismatch will cause the build step (`wrangler deploy --dry-run`) to fail when it checks bindings against expected worker names.
-**Action:** When a naming mismatch causes CI failures, align the `name` field in `wrangler.json` with the expected CI target (which often matches the `package.json` name) instead of altering `package.json`.
+## 2024-05-24 - [Environment Override Bindings]
+**Learning:** When defining environment overrides in `wrangler.json` (e.g. configuring `env.test.name`), configuration properties like `d1_databases` are *not* automatically inherited. If the environment expects a binding, it must be explicitly re-defined within that environment block.
+**Action:** Always replicate required resource bindings, such as `d1_databases`, inside environment override blocks in `wrangler.json` to prevent deployment or runtime failures.

@@ -2,6 +2,18 @@
   "compatibility_date": "2025-10-08",
   "main": "src/index.ts",
   "name": "jtsdeer-d1-api",
+  "env": {
+    "test": {
+      "name": "jtsdeer-d1-api-test",
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_id": "bce2f351-4a4f-48d8-9663-ab423907138a",
+          "database_name": "jtsdeer-d1-test"
+        }
+      ]
+    }
+  },
   "upload_source_maps": true,
   "d1_databases": [
     {

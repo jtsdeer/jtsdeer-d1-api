@@ -1,0 +1,1 @@
+- **CI Fix: Mismatched Deployment Targets**: To fix CI failures where Cloudflare Workers deployments fail due to missing or mismatched targets (e.g. `Workers Builds: jtsdeer-d1-api-test`), align the `name` field in `wrangler.json` with the expected CI check target. Never modify `package.json` for CI deployment targets to avoid breaking dependency or project name assumptions.

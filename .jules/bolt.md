@@ -10,3 +10,6 @@
 ## 2024-05-24 - [Avoid URL object allocation on hot path for route matching]
 **Learning:** In Cloudflare Workers (V8 runtime), constructing a full `URL` object (e.g., `new URL(request.url)`) is surprisingly computationally expensive compared to simple string matching because it involves full parsing and object allocation.
 **Action:** When performing simple routing or path checking (like verifying if a request is to the root `/`), use string methods like `indexOf` and substring checking directly on `request.url` to bypass URL object instantiation. This can yield a significant (~10x) speedup on that specific check.
+## 2024-05-24 - [Switch statements vs Dictionary lookup for character escaping]
+**Learning:** In V8/Cloudflare Workers, using a switch statement inside a single-pass `String.prototype.replace()` callback is noticeably faster than using an object dictionary lookup. This is because it avoids object property access overhead and reduces string allocations on the hot path for escaping operations.
+**Action:** When implementing character replacements (like HTML escaping), prefer a switch statement within the replace callback over an object dictionary map for maximum performance.

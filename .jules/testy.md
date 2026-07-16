@@ -30,3 +30,10 @@
 ## 2025-10-09 - Strict TypeScript Error Type Verification
 **Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
 **Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.
+
+## 2026-07-12 - CI failures caused by wrangler.json and package.json name mismatch
+**Issue:** The CI pipeline was failing the `Workers Builds: jtsdeer-d1-api` check.
+**Root Cause:** The `name` field in `wrangler.json` (`jtsdeer-d1-api-test`) did not match the expected deployment target name (`jtsdeer-d1-api`) and the `name` in `package.json`.
+**Fix:** Updated `wrangler.json` so the `name` field strictly matches `package.json` (`jtsdeer-d1-api`).
+**Validation:** Local dry-run builds pass successfully and correctly resolve to the `jtsdeer-d1-api` target.
+**Impact:** Fixes fatal CI pipeline failures and prevents erroneous target deployments.

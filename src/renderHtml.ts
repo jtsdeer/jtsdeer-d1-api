@@ -1,15 +1,24 @@
-const HTML_ENTITIES: Record<string, string> = {
-  "&": "&amp;",
-  "<": "&lt;",
-  ">": "&gt;",
-  '"': "&quot;",
-  "'": "&#039;",
-};
-
 // ⚡ Bolt: Single-pass regex replacement is ~25% faster than multiple .replace() calls
 // as it prevents multiple intermediate string allocations and passes over the string.
+// ⚡ Bolt: Using a switch statement inside the replace callback performs faster than an
+// object dictionary lookup in V8, avoiding object property access overhead.
 function escapeHtml(unsafe: string): string {
-  return unsafe.replace(/[&<>"']/g, (match) => HTML_ENTITIES[match]);
+  return unsafe.replace(/[&<>"']/g, (match) => {
+    switch (match) {
+      case "&":
+        return "&amp;";
+      case "<":
+        return "&lt;";
+      case ">":
+        return "&gt;";
+      case '"':
+        return "&quot;";
+      case "'":
+        return "&#039;";
+      default:
+        return match;
+    }
+  });
 }
 
 export function renderHtml(content: string) {

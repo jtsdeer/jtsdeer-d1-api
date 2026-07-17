@@ -31,9 +31,9 @@
 **Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
 **Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.
 
-## 2024-05-18 - CI Deployments fail for multiple worker environments
-**Issue:** The project has multiple CI targets (e.g., `jtsdeer-d1-api` and `jtsdeer-d1-api-test`), but modifying only the top-level `name` in `wrangler.json` breaks the pipeline for the other environment because of name mismatch.
-**Root Cause:** The Cloudflare worker deploy targets rely on exact `name` matching. CI pipelines expect different names based on whether they are building production or test.
-**Fix:** Set the top-level `name` to the production target and added an `env.test` environment override to satisfy the test pipeline target. Duplicated the `d1_databases` binding in the override block.
-**Validation:** Validated locally using `wrangler deploy --env test --dry-run` and verified both CI jobs target their respective endpoints correctly.
-**Impact:** Both the main CI and the test CI can now correctly deploy from the same branch without modifying configuration on the fly.
+## 2024-05-18 - CI Deployments fail due to undefined default environments
+**Issue:** When multiple environments are defined in `wrangler.json`, the CI `build` script triggers a warning or error if a target environment is not specified during `wrangler deploy`.
+**Root Cause:** The `package.json` deploy commands (`build` and `check`) did not explicitly specify the environment. Adding an environment block without updating the package.json scripts causes ambiguity in CI pipelines and results in a fatal error or a warning.
+**Fix:** Modified the `"build"` and `"check"` scripts in `package.json` to explicitly pass `--env=""` for targeting the top-level (default) environment configuration.
+**Validation:** Ran `pnpm run check` locally and verified that the warning disappeared.
+**Impact:** Prevents unexpected build pipeline failures when running default CI checks after environment blocks have been added to Wrangler config.

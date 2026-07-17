@@ -34,3 +34,7 @@
 ## 2025-10-09 - Satisfying multiple CI deployment environments in wrangler.json
 **Learning:** When a Cloudflare Workers project has multiple CI build checks expecting different worker names (e.g., production vs. test targets), modifying only the top-level 'name' in 'wrangler.json' will break the pipeline for the other environment.
 **Action:** Define environment overrides (e.g., 'env.test.name') within 'wrangler.json' to satisfy all CI target expectations simultaneously, and ensure required bindings like `d1_databases` are duplicated inside the override block.
+
+## 2025-10-09 - Consistent Package Manager Usage in Scripts
+**Learning:** Mixing package managers (e.g. using `npm run` inside a `pnpm` project's scripts) can lead to caching conflicts, missing dependencies, or inconsistent behavior during builds and local development.
+**Action:** Always ensure that nested script executions (like `dev` running `seedLocalD1`) invoke the same package manager (e.g. `pnpm run seedLocalD1` instead of `npm run seedLocalD1`) to maintain environment consistency.

@@ -30,3 +30,9 @@
 ## 2025-10-09 - Strict TypeScript Error Type Verification
 **Learning:** The project enforces strict TypeScript rules, which do not allow the use of `any` in catch blocks (e.g., `catch (e: any)`). This causes CI build failures.
 **Action:** Always use `catch (e: unknown)` and verify the error type using `e instanceof Error` before accessing its properties (like `e.message` or `e.stack`) to avoid CI build failures and properly log errors.
+
+## 2026-07-12 - Support multiple CI environment targets via wrangler.json env overrides
+**Issue:** When a Cloudflare Workers project is tested against multiple CI build targets (e.g., `production` vs `test`), expecting different worker names, changing the top-level `name` in `wrangler.json` satisfies one check but breaks the other.
+**Fix:** Define environment overrides (like `env.test.name`) inside `wrangler.json` to handle different naming expectations simultaneously. Also, duplicate necessary resource bindings (like `d1_databases`) within the override blocks to avoid missing binding errors in dry-runs.
+**Validation:** Local dry runs for both standard and test environments succeed, and the configuration meets CI expectations.
+**Impact:** Eliminates configuration toggling and stabilizes the CI pipeline.

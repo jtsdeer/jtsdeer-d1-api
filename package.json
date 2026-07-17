@@ -22,9 +22,9 @@
   },
   "scripts": {
     "cf-typegen": "wrangler types",
-    "build": "tsc && wrangler deploy --dry-run",
+    "build": "tsc && wrangler deploy --env=\"\" --dry-run",
     "start": "npx wrangler dev --ip 0.0.0.0 --port $PORT",
-    "check": "tsc && wrangler deploy --dry-run",
+    "check": "tsc && wrangler deploy --env=\"\" --dry-run",
     "deploy": "wrangler deploy",
     "dev": "npm run seedLocalD1 && wrangler dev",
     "predeploy": "wrangler d1 migrations apply DB --remote",
